@@ -1,19 +1,11 @@
-from fastapi import FastAPI
 from typing import List
-from pydantic import BaseModel
+from fastapi import FastAPI
+
+from beer_friends.entities.beer import Beer
+from beer_friends.entities.bill import Bill
+from beer_friends.entities.order import Order
 
 app = FastAPI()
-
-class Beer(BaseModel):
-    name: str
-    price: float
-    image: str | None = None
-
-class Order(BaseModel):
-    beers: List[Beer]
-
-class Bill(BaseModel):
-    total: float
 
 beers = [
     Beer(name="Poker", price=10.0, image="https://jotajotafoods.com/wp-content/uploads/2022/05/CER00034.jpg"),
@@ -29,25 +21,34 @@ orders = []
 @app.get("/beers", response_model=List[Beer])
 async def list_beers():
     """
-    This function lists all the available beers.
+    This endpoint returns a list of beers avaliable in the bar
     """
-    return beers
+    return [beer for beer in beers if beer.qty > 0]
+
+# recive order should minus the qty of the beer save in beers list
 
 @app.post("/order", response_model=Order)
 async def receive_order(order: Order):
+    for beer in order.beers:
+        for i, b in enumerate(beers):
+            if b.name == beer.name:
+                beers[i].qty -= beer.qty
     orders.append(order)
     return order
 
 @app.get("/bill", response_model=Bill)
-async def get_bill():
+async def get_bill(friend_id: int | None= None, total_friends: int | None=1):
     total = sum(beer.price for order in orders for beer in order.beers)
+    if friend_id is None:
+        # divide the total of the bill by the number of friends and return the amount to pay
+        return Bill(total=total/ total_friends)
+
+    order_by_friend = [order for order in orders if order.friend_id == friend_id]
+    total = sum(beer.price for order in order_by_friend for beer in order.beers)
     return Bill(total=total)
 
 @app.post("/pay")
-async def pay_bill(beer_name: str):
-    for order in orders:
-        for beer in order.beers:
-            if beer.name == beer_name:
-                order.beers.remove(beer)
-                return {"message": f"Paid"}
-    return {"message": "Beer not found in orders"}
+async def pay_bill(friend_id: int | None):
+    orders = [order for order in orders if order.friend_id != friend_id]
+    return {"message": "Bill payed", "pending": sum(beer.price for order in orders for beer in order.beers) }
+
