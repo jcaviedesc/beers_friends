@@ -25,6 +25,7 @@ export default function Home() {
         {data.data.map((beer) => {
           return (
             <Grid.Item>
+              c
               <ProductCard
                 key={beer.name}
                 subtitle="Beer"
