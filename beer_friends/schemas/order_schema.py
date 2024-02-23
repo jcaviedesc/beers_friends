@@ -2,11 +2,11 @@ from typing import List
 
 from pydantic import BaseModel
 
-from beer_friends.entities.beer import Beer
+from beer_friends.schemas.beer_schema import BeerSchema
 
-class Order(BaseModel):
+class OrderSchema(BaseModel):
     order_id: int
-    beers: List[Beer]
+    beers: List[BeerSchema]
     # order by is a friend_id: int;
     orderby: int
     # status is a string literal or enum with the following values: "pending", "paid"

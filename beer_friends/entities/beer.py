@@ -1,7 +1,8 @@
 from pydantic import BaseModel
 
 class Beer(BaseModel):
-    name: str
+    beer_id: int
+    name: str=""
     price: float
     image: str | None = None
-    qty: int = 30
+    qty: int = 0
