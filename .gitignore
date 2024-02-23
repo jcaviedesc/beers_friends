@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+env_bak/
+
+# IDE
+.vscode/
+.idea/
+
+# Dependency directories
+lib/
+libs/
+lib64/
+dist/
+build/
+egg-info/
+eggs/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Testing
+.pytest_cache/
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+htmlcov/
+.pytest_cache/
+.pytest_tmp/
+.pytest_cache
+.pytest_tmp
+
+# Logs and databases
+*.log
+*.sqlite3
+*.db
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+ehthumbs_vista.db
+ehthumbs_win8.db
+Desktop.ini
+
+# Editor generated files
+*~
+*.swp
+*.swo
+*.bak
+*.pyc
+*.pyo
+*.orig
+*.rej
+*.tmp
+*.tmp.*
+*.~lock.*
+*.DS_Store?
+*.vscode/
+.vscode/
